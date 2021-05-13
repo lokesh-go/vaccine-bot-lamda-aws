@@ -1,0 +1,12 @@
+version: "3.3"
+services: 
+
+  database:
+    image: 'mongo'
+    container_name: 'mongodb_telegram_bot'
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=${DBUSER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DBPASS}
+    restart: always
+    ports:
+      - '27017:27017' 

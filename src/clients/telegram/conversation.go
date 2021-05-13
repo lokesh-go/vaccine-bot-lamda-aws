@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
@@ -18,11 +19,11 @@ func (tBot *telegramBot) startConversation() {
 		if update.Message == nil {
 			continue
 		}
-		log.Println("Recieved request from telegram - ", update)
+		log.Println("Recieved request from telegram - ", update.Message.Chat.ID)
 
 		// Gets msgs to send the users
 		logErr := ""
-		res, err := getMessages(update.Message.Text)
+		res, err := getMessages(update.Message.Text, update.Message.Chat.ID, update.Message.From.FirstName + " " + update.Message.From.LastName)
 		if err != nil {
 			logErr = err.Error()
 			if res == nil {
@@ -30,11 +31,19 @@ func (tBot *telegramBot) startConversation() {
 			}
 		}
 
+		// Forms admin ID
 		adminChatID, _ := strconv.Atoi(os.Getenv("AdminChatID"))
+
 		// Sends logs to admin
 		if update.Message.Chat.ID != int64(adminChatID) || err != nil {
 			// Froms log msg
-			logMsg := "User Request Logs\n------------------------------\n\t| UserName: " + update.Message.From.UserName + "\n\t| Name: " + update.Message.From.FirstName + " " + update.Message.From.LastName + "\n\t| Request: " + update.Message.Text + "\n\t| Error: " + logErr
+			logMsg := "User Request Logs\n------------------------------\n\t| ChatID: " + strconv.Itoa(int(update.Message.Chat.ID)) + "\n\t| UserName: " + update.Message.From.UserName + "\n\t| Name: " + update.Message.From.FirstName + " " + update.Message.From.LastName + "\n\t| Request: " + update.Message.Text + "\n\t| Error: " + logErr
+
+			// Case of notify
+			if strings.Contains(update.Message.Text, "/notify") {
+				logMsg = logMsg + "\n\t| Res: " + (*res)[0]
+			}
+
 			// Sends logs to admin
 			tBot.sendMessage(int64(adminChatID), logMsg)
 		}

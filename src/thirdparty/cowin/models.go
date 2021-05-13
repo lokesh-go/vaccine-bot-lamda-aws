@@ -23,7 +23,7 @@ type Center struct {
 type Session struct {
 	SessionID         string   `json:"session_id"`
 	Date              string   `json:"date"`
-	AvailableCapacity int      `json:"available_capacity"`
+	AvailableCapacity float64  `json:"available_capacity"`
 	MinAgeLimit       int      `json:"min_age_limit"`
 	Vaccine           string   `json:"vaccine"`
 	Slots             []string `json:"slots"`

@@ -1,5 +1,6 @@
 package telegram
 
 const (
-	Debug bool = true
+	Debug        bool = true
+	Notification bool = true
 )
