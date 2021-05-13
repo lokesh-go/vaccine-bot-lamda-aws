@@ -12,7 +12,7 @@ func getMessages(request string, chatID int64, name string) (response *[]string,
 
 	// Case of greet msg
 	if reqMsg == "/start" || reqMsg == "hi" || reqMsg == "hello" || reqMsg == "hey" {
-		greetMsg := "Welcome!\n\nBot helps to check vaccine availability\nplease enter valid pincode to check\n\nDeveloper: Lokesh Chandra"
+		greetMsg := "Welcome!\n\nBot helps to check vaccine availability\nplease enter valid pincode to check\n\nYou can also add notification for particular pincode\n\nFor ON\n\t/notify on YOUR_PIN_CODE\n\nFor check status\n\t/notify status\n\nFor OFF\n\t/notify off\n\nDeveloper: Lokesh Chandra"
 		return &[]string{greetMsg}, nil
 	}
 
