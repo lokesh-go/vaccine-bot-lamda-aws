@@ -21,18 +21,18 @@ func (tBot *telegramBot) startConversation() {
 		}
 		log.Println("Recieved request from telegram - ", update.Message.Chat.ID)
 
+		// Forms admin ID
+		adminChatID, _ := strconv.Atoi(os.Getenv("AdminChatID"))
+
 		// Gets msgs to send the users
 		logErr := ""
-		res, err := getMessages(update.Message.Text, update.Message.Chat.ID, update.Message.From.FirstName + " " + update.Message.From.LastName)
+		res, err := tBot.getMessages(update.Message.Text, update.Message.Chat.ID, adminChatID, update.Message.From.FirstName + " " + update.Message.From.LastName)
 		if err != nil {
 			logErr = err.Error()
 			if res == nil {
 				res = &[]string{"Something went wrong !\nPlease try later !"}
 			}
 		}
-
-		// Forms admin ID
-		adminChatID, _ := strconv.Atoi(os.Getenv("AdminChatID"))
 
 		// Sends logs to admin
 		if update.Message.Chat.ID != int64(adminChatID) || err != nil {

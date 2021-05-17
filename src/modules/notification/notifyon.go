@@ -12,6 +12,11 @@ func on(req string, chatID int64, name string) (res *[]string, err error) {
 	// Splits request
 	msgs := strings.SplitN(req, " ", 3)
 
+	// Checks msgs length
+	if len(msgs) != 3 || msgs[1] != "on" {
+		return &[]string{"Wrong Input for Notification!\nPlease input:\n\t/notify on YOUR_PIN_CODE\n\t/notify off\n\t/notify status"}, errors.New("NOTIFY_ON_INPUT_ERR")
+	}
+
 	// Gets pincode form msgs
 	pincode := strings.Trim(msgs[2], " ")
 

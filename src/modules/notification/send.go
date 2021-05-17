@@ -25,7 +25,7 @@ func New(bot *tgbotapi.BotAPI) *telegram {
 }
 
 func (t *telegram) Send() {
-	count := 20
+	count := 12
 	adminChatID, _ := strconv.Atoi(os.Getenv("AdminChatID"))
 	// Run notification check
 	for {
@@ -61,11 +61,11 @@ func (t *telegram) Send() {
 					// Sends msg to the user
 					t.sendMsg(user.ChatID, sendMsg)
 					// Sends msg to the admin
-					t.sendMsg(int64(adminChatID), "ChatID: "+strconv.Itoa(int(user.ChatID))+"\n"+sendMsg)
+					//t.sendMsg(int64(adminChatID), "ChatID: "+strconv.Itoa(int(user.ChatID))+"\n"+sendMsg)
 				}
 
 				// Sends processing request every hour to admin
-				if count == 20 {
+				if count == 12 {
 					//log.Println("USER CHECK - ", user.Name)
 					// Inform to the admin
 					t.sendMsg(int64(adminChatID), "Checked Notification for user\n\n| ChatID: "+strconv.Itoa(int(user.ChatID))+"\n| Name: "+user.Name+"\n| Pincode: "+user.Pincode)
@@ -74,16 +74,16 @@ func (t *telegram) Send() {
 		}
 
 		// Count 0 after every hour
-		if count == 20 {
+		if count == 12 {
 			count = 0
 		}
 		count++
 
-		log.Println("Execute in every 3 minutes")
+		log.Println("Execute in every 5 minutes")
 		// Inform to the admin
-		t.sendMsg(int64(adminChatID), "Execute every 3 minutes for\nUsers: "+strconv.Itoa(uCount))
+		t.sendMsg(int64(adminChatID), "Execute every 5 minutes for\nUsers: "+strconv.Itoa(uCount)+"\nNo of req per 5 mint hits on Co-Win: "+strconv.Itoa(len(pincodes)))
 		// Time interval to check
-		time.Sleep(3 * time.Minute)
+		time.Sleep(5 * time.Minute)
 	}
 }
 
